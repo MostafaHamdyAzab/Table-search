@@ -33,11 +33,12 @@
         </v-row>
       </v-container>
     </template>
-    <v-container>
+    <v-container style="max-height: 400px; overflow-y: auto">
       <v-data-table
         :headers="headers"
         :items="filteredData"
         :search="search"
+        height="300px"
       ></v-data-table>
     </v-container>
   </v-card>
