@@ -24,15 +24,9 @@
 
           <v-col cols="3">
             <v-select
+              v-model="selectedTent"
               label="Tent"
-              :items="[
-                'California',
-                'Colorado',
-                'Florida',
-                'Georgia',
-                'Texas',
-                'Wyoming',
-              ]"
+              :items="getDistictTents"
               variant="outlined"
             ></v-select>
           </v-col>
@@ -57,6 +51,7 @@ export default {
     return {
       search: "",
       selectedCamp: "",
+      selectedTent: "",
       headers: [
         { align: "start", key: "hajjId", title: "ID" },
         { key: "name", sortable: false, align: "center", title: "Name" },
@@ -65,6 +60,7 @@ export default {
         { key: "bedNumber", title: "Bed" },
       ],
       allData: data,
+      filteredData: data,
     };
   },
   computed: {
@@ -82,14 +78,43 @@ export default {
 
       return uniqueTents;
     },
-    filteredData() {
-      console.log(this.selectedCamp);
-      if (!this.selectedCamp) return this.allData;
-      return this.allData.filter(
-        (item) => item.campNumber === this.selectedCamp
-      );
-    },
+    // filteredData() {
+    //   if (!this.selectedCamp && !this.selectedTent) {
+    //     return this.allData;
+    //   } else if (this.selectedCamp) {
+    //     return this.allData.filter(
+    //       (item) => item.campNumber === this.selectedCamp
+    //     );
+    //   } else if (this.selectedTent) {
+    //     return this.allData.filter(
+    //       (item) => item.tentNumber === this.selectedTent
+    //     );
+    //   }
+    // },
   },
+  watch: {
+    selectedCamp(newCamp) {
+      if (!newCamp) {
+        this.filteredData = this.allData;
+      } else {
+        // Filter allData when selectedCamp changes
+        this.filteredData = this.allData.filter(
+          (item) => item.campNumber === newCamp
+        );
+      }
+    },
+    selectedTent(newTent) {
+      if (!newTent) {
+        this.filteredData = this.allData;
+      } else {
+        // Filter allData when selectedCamp changes
+        // this.selectedCamp = "";
+        this.filteredData = this.allData.filter(
+          (item) => item.tentNumber === newTent
+        );
+      }
+    },
+  }, //end watch
 };
 </script>
 <style>
