@@ -14,15 +14,9 @@
 
           <v-col cols="3">
             <v-select
+              v-model="selectedCamp"
               label="Camp"
-              :items="[
-                'California',
-                'Colorado',
-                'Florida',
-                'Georgia',
-                'Texas',
-                'Wyoming',
-              ]"
+              :items="getDistictCamps"
               variant="outlined"
               class="mr-1"
             ></v-select>
@@ -48,7 +42,7 @@
     <v-container>
       <v-data-table
         :headers="headers"
-        :items="desserts"
+        :items="filteredData"
         :search="search"
       ></v-data-table>
     </v-container>
@@ -62,6 +56,7 @@ export default {
   data() {
     return {
       search: "",
+      selectedCamp: "",
       headers: [
         { align: "start", key: "hajjId", title: "ID" },
         { key: "name", sortable: false, align: "center", title: "Name" },
@@ -69,8 +64,31 @@ export default {
         { key: "tentNumber", title: "Tent" },
         { key: "bedNumber", title: "Bed" },
       ],
-      desserts: data,
+      allData: data,
     };
+  },
+  computed: {
+    getDistictCamps() {
+      const uniqueCamps = [
+        ...new Set(this.allData.map((item) => item.campNumber)),
+      ];
+
+      return uniqueCamps;
+    },
+    getDistictTents() {
+      const uniqueTents = [
+        ...new Set(this.allData.map((item) => item.tentNumber)),
+      ];
+
+      return uniqueTents;
+    },
+    filteredData() {
+      console.log(this.selectedCamp);
+      if (!this.selectedCamp) return this.allData;
+      return this.allData.filter(
+        (item) => item.campNumber === this.selectedCamp
+      );
+    },
   },
 };
 </script>
